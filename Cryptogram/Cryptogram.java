@@ -5,18 +5,18 @@ public class Cryptogram
     //private static final String LCASE = "abcdefghijklmnopqrstuvwxyz";
     //private static final String UCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //private static final String NUM = "1234567890";
-    //private static final String PUNC = ".,!?";
-    //private static final String QUOTE = "\"\'";
+    //private static final String PUNC = ".,!?:;";
+    //private static final String QUOTE = "\"\'`";
     //private static final String SLASH = "/\\";
     //private static final String LBRAC = "([{<";
-    //private static final String RBRAC = ">}])";
-    //private static final String SYM = "@#$%^&";
-    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?([{<>}])@#$%^&";
+    //private static final String RBRAC = ")]}>";
+    //private static final String MATH = "+-*/^=~$%";
+    //private static final String TAG = "@#";
+    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_&.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#";
     
     public static String encode(String message)
     {
         String code = "";
-        
         for (int i = 0; i < message.length(); i++)
         {
             if (message.charAt(i) == ' ')
@@ -25,17 +25,20 @@ public class Cryptogram
             }
             else
             {
-                code += ORDER.charAt(ORDER.indexOf(message.charAt(i))+1);
+                int iORDER = ORDER.indexOf(message.charAt(i))+1;
+                if (iORDER >= ORDER.length())
+                {
+                    iORDER -= ORDER.length();
+                }
+                code += ORDER.charAt(iORDER);
             }
         }
-        
         return code;
     }
     
     public static String decode(String code)
     {
         String message = "";
-        
         for (int i = 0; i < code.length(); i++)
         {
             if (code.charAt(i) == ' ')
@@ -44,10 +47,14 @@ public class Cryptogram
             }
             else
             {
-                message += ORDER.charAt(ORDER.indexOf(message.charAt(i))-1);
+                int iORDER = ORDER.indexOf(code.charAt(i))-1;
+                if (iORDER < 0)
+                {
+                    iORDER += ORDER.length();
+                }
+                message += ORDER.charAt(iORDER);
             }
         }
-        
         return message;
     }
     
@@ -56,6 +63,8 @@ public class Cryptogram
         Scanner scanner = new Scanner(System.in);
         String another = "Y";
         String choice = "";
+        
+        System.out.println("Cryptogram");
         
         while (another.equals("Y"))
         {
