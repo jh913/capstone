@@ -1,8 +1,17 @@
+//Import the scanner class whose object will be used in the main method
+//to prompt the user for choices, messages / codes, etc.
 import java.util.Scanner;
 
+/**
+ * Class that encodes user input messages and decodes user input codes by using a main method
+ * that prompts the user for choices, messages / codes, etc. and calls the corresponding methods
+ * 
+ * @author Justin Huang
+ * @version 13 April 2016
+ */
 public class Cryptogram
 {
-    //Preset orders of different types of characters -- now using a single combined order instead
+    ////Preset orders of different types of characters -- now using a single combined order instead
     //private static final String LCASE = "abcdefghijklmnopqrstuvwxyz";
     //private static final String UCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //private static final String NUM = "1234567890";
@@ -13,9 +22,10 @@ public class Cryptogram
     //private static final String RBRAC = ")]}>";
     //private static final String MATH = "+-*/^=~$%";
     //private static final String TAG = "@#";
+    //private static final String SEP = "_&|";
     
     //Preset order of characters that will be used throughout the Cryptogram class
-    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_&.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#";
+    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#_&|";
     
     /**
      * Encodes a user input message by replacing each character in the message with the next
@@ -26,23 +36,32 @@ public class Cryptogram
      */
     public static String encode(String message)
     {
+        //Initializes the user input message's corresponding code to an empty string
         String code = "";
-        for (int i = 0; i < message.length(); i++)
+        //Adds the character that is one character to the right, based on the preset ORDER, 
+        //of each character in the user input message, to the code
+        for (int i = 0; i < message.length(); i++) //Loops through the user input message
         {
-            if (message.charAt(i) == ' ')
+            if (message.charAt(i) == ' ') //If the character at the current index of the message is a space
             {
+                //Add a space to the code
                 code += " ";
             }
-            else
+            else //If the character at the current index of the message is anything other than a space
             {
+                //The index of the preset ORDER of the character to the right
+                //of the character at the current index of the message
                 int iORDER = ORDER.indexOf(message.charAt(i))+1;
-                if (iORDER >= ORDER.length())
+                if (iORDER >= ORDER.length()) //If the index exceeds the length of the preset ORDER
                 {
+                    //Subtract the length of the preset ORDER from the index iORDER
                     iORDER -= ORDER.length();
                 }
+                //Add the character at the index iORDER of the preset ORDER to the code
                 code += ORDER.charAt(iORDER);
             }
         }
+        //Return the code
         return code;
     }
     
@@ -55,23 +74,32 @@ public class Cryptogram
      */
     public static String decode(String code)
     {
+        //Initializes the user input code's corresponding message to an empty string
         String message = "";
-        for (int i = 0; i < code.length(); i++)
+        //Adds the character that is one character to the left, based on the preset ORDER,
+        //of each character in the user input code, to the message
+        for (int i = 0; i < code.length(); i++) //Loops through the user input code
         {
-            if (code.charAt(i) == ' ')
+            if (code.charAt(i) == ' ') //If the character at the current index of the code is a space
             {
+                //Add a space to the message
                 message += " ";
             }
-            else
+            else //If the character at the current index of the code is anything other than a space
             {
+                //The index of the preset ORDER of the character to the left
+                //of the character at the current index of the code
                 int iORDER = ORDER.indexOf(code.charAt(i))-1;
-                if (iORDER < 0)
+                if (iORDER < 0) //If the index falls below 0
                 {
+                    //Add the length of the preset ORDER to the index iORDER
                     iORDER += ORDER.length();
                 }
+                //Add the character at the index iORDER of the preset ORDER to the message
                 message += ORDER.charAt(iORDER);
             }
         }
+        //Return the message
         return message;
     }
     
