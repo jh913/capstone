@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Justin Huang
  * @version 13 April 2016
  */
-public class Cryptogram
+public class Cryptogram2
 {
     ////Preset orders of different types of characters -- now using a single combined order instead
     //private static final String LCASE = "abcdefghijklmnopqrstuvwxyz";
@@ -24,7 +24,7 @@ public class Cryptogram
     //private static final String TAG = "@#";
     //private static final String SEP = "_&|";
     
-    //Preset order of characters that will be used throughout the Cryptogram class
+    //Preset order of characters that will be used throughout the Cryptogram2 class
     private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#_&|";
     
     /**
@@ -34,7 +34,7 @@ public class Cryptogram
      * @param String message The user input message to be encoded into a code
      * @return String code The code encoded from the user input message
      */
-    public static String encode(String message)
+    public static String encode(String message, int num)
     {
         //Initializes the user input message's corresponding code to an empty string
         String code = "";
@@ -51,8 +51,8 @@ public class Cryptogram
             {
                 //The index of the preset ORDER of the character to the right
                 //of the character at the current index of the message
-                int iORDER = ORDER.indexOf(message.charAt(i))+1;
-                if (iORDER >= ORDER.length()) //If the index exceeds the length of the preset ORDER
+                int iORDER = ORDER.indexOf(message.charAt(i))+num;
+                while (iORDER >= ORDER.length()) //If the index exceeds the length of the preset ORDER
                 {
                     //Subtract the length of the preset ORDER from the index iORDER
                     iORDER -= ORDER.length();
@@ -72,7 +72,7 @@ public class Cryptogram
      * @param String code The user input code to be decoded into a message
      * @return String message The message decoded from the user input code
      */
-    public static String decode(String code)
+    public static String decode(String code, int num)
     {
         //Initializes the user input code's corresponding message to an empty string
         String message = "";
@@ -89,8 +89,8 @@ public class Cryptogram
             {
                 //The index of the preset ORDER of the character to the left
                 //of the character at the current index of the code
-                int iORDER = ORDER.indexOf(code.charAt(i))-1;
-                if (iORDER < 0) //If the index falls below 0
+                int iORDER = ORDER.indexOf(code.charAt(i))-num;
+                while (iORDER < 0) //If the index falls below 0
                 {
                     //Add the length of the preset ORDER to the index iORDER
                     iORDER += ORDER.length();
@@ -104,7 +104,7 @@ public class Cryptogram
     }
     
     /**
-     * Main method of the Cryptogram program that prompts the user for choices, messages / codes, etc.
+     * Main method of the Cryptogram2 program that prompts the user for choices, messages / codes, etc.
      * Encodes user input messages and decodes user input codes by using the corresponding methods
      */
     public static void main(String[] args)
@@ -112,7 +112,8 @@ public class Cryptogram
         Scanner scanner = new Scanner(System.in);
         String another = "Y";
         String choice = "";
-        System.out.println("Cryptogram");
+        int num = 0;
+        System.out.println("Cryptogram2");
         while (another.equals("Y"))
         {
             while (choice.equals("encode") == false && choice.equals("decode") == false)
@@ -120,17 +121,27 @@ public class Cryptogram
                 System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
                 choice = scanner.nextLine().toLowerCase();
             }
-            if (choice.equals("encode"))
+            if (choice.toLowerCase().equals("encode"))
             {
                 System.out.print("\nMessage to encode: ");
                 String message = scanner.nextLine();
-                System.out.println("Code: " + Cryptogram.encode(message));
+                while (num < 1)
+                {
+                    System.out.print("\nNumber of characters to move to the right: ");
+                    num = scanner.nextInt();
+                }
+                System.out.println("Code: " + Cryptogram2.encode(message, num));
             }
-            else if (choice.equals("decode"))
+            else if (choice.toLowerCase().equals("decode"))
             {
                 System.out.print("\nCode to decode: ");
                 String code = scanner.nextLine();
-                System.out.println("Message: " + Cryptogram.decode(code));
+                while (num < 1)
+                {
+                    System.out.print("\nNumber of characters to move to the left: ");
+                    num = scanner.nextInt();
+                }
+                System.out.println("Message: " + Cryptogram2.decode(code, num));
             }
             another = "";
             choice = "";
@@ -140,6 +151,6 @@ public class Cryptogram
                 another = scanner.nextLine().toUpperCase();
             }
         }
-        System.out.println("\nCryptogram closed.");
+        System.out.println("\nCryptogram2 closed.");
     }
 }
