@@ -22,10 +22,10 @@ public class Cryptogram2
     //private static final String RBRAC = ")]}>";
     //private static final String MATH = "+-*/^=~$%";
     //private static final String TAG = "@#";
-    //private static final String SEP = "_&|";
+    //private static final String BOOL = "&|";
     
     //Preset order of characters that will be used throughout the Cryptogram2 class
-    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#_&|";
+    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
     
     /**
      * Encodes a user input message by replacing each character in the message with the next
@@ -119,7 +119,8 @@ public class Cryptogram2
             while (choice.equals("encode") == false && choice.equals("decode") == false)
             {
                 System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
-                choice = scanner.nextLine().toLowerCase();
+                choice = scanner.next().toLowerCase();
+                scanner.nextLine();
             }
             if (choice.toLowerCase().equals("encode"))
             {
@@ -145,10 +146,12 @@ public class Cryptogram2
             }
             another = "";
             choice = "";
+            num = 0;
             while (another.equals("Y") == false && another.equals("N") == false)
             {
                 System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
-                another = scanner.nextLine().toUpperCase();
+                another = scanner.next().toUpperCase();
+                scanner.nextLine();
             }
         }
         System.out.println("\nCryptogram2 closed.");

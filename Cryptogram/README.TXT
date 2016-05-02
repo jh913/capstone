@@ -11,13 +11,17 @@ DEPENDENCIES:
 HOW TO START THIS PROJECT: Run the main method of the Cryptogram class
 AUTHORS: Justin Huang
 USER INSTRUCTIONS:
-1) Start Cryptogram program by running main method of Cryptogram class
+1) Start the Cryptogram program by running the main method of the Cryptogram class.
 2) The program will ask whether you want to encode a message or decode a code.
-Type "encode" or "decode" in any case and press the Enter key.
+    Type "encode" or "decode" in any case and press the Enter key.
 3) The program will prompt you for the message to encode or code to decode.
-Type the message or code and press the Enter key.
-The program will give you the corresponding code or message.
+    Type the message or code and press the Enter key.
+    The program will give you the corresponding code or message.
 4) The program will ask whether or not you want to encode another message or decode another code.
-Type "Y" or "N" in any case and press the Enter key.
-If you respond "Y", the program will loop back to step 2.
-If you respond "N", the program will end and you will be able to close the window.
+    Type "Y" or "N" in any case and press the Enter key.
+    If you respond "Y", the program will loop back to step 2.
+    If you respond "N", the program will end and you will be able to close the window.
+
+The Cryptogram2 program also prompts you for the number of characters to move the characters in
+your message to the right or the characters in your code to the left. This occurs after the
+program prompts you for the message or code (in step 3).
