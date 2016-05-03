@@ -28,8 +28,8 @@ public class Cryptogram2
     private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
     
     /**
-     * Encodes a user input message by replacing each character in the message with the next
-     * consecutive character based on the preset ORDER
+     * Encodes a user input message by replacing each character in the message with the
+     * character num consecutive characters to the right based on the preset ORDER
      * 
      * @param String message The user input message to be encoded into a code
      * @return String code The code encoded from the user input message
@@ -66,8 +66,8 @@ public class Cryptogram2
     }
     
     /**
-     * Decodes a user input code by replacing each character in the code with the previous
-     * consecutive character based on the preset ORDER
+     * Decodes a user input code by replacing each character in the code with the
+     * character num consecutive characters to the left based on the preset ORDER
      * 
      * @param String code The user input code to be decoded into a message
      * @return String message The message decoded from the user input code
@@ -116,9 +116,12 @@ public class Cryptogram2
         System.out.println("Cryptogram2");
         while (another.equals("Y"))
         {
+            System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
+            choice = scanner.next().toLowerCase();
+            scanner.nextLine();
             while (choice.equals("encode") == false && choice.equals("decode") == false)
             {
-                System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
+                System.out.print("Would you like to encode a message or decode a code? (encode/decode): ");
                 choice = scanner.next().toLowerCase();
                 scanner.nextLine();
             }
@@ -128,7 +131,7 @@ public class Cryptogram2
                 String message = scanner.nextLine();
                 while (num < 1)
                 {
-                    System.out.print("\nNumber of characters to move to the right: ");
+                    System.out.print("Number of characters to move to the right: ");
                     num = scanner.nextInt();
                 }
                 System.out.println("Code: " + Cryptogram2.encode(message, num));
@@ -139,7 +142,7 @@ public class Cryptogram2
                 String code = scanner.nextLine();
                 while (num < 1)
                 {
-                    System.out.print("\nNumber of characters to move to the left: ");
+                    System.out.print("Number of characters to move to the left: ");
                     num = scanner.nextInt();
                 }
                 System.out.println("Message: " + Cryptogram2.decode(code, num));
@@ -147,9 +150,12 @@ public class Cryptogram2
             another = "";
             choice = "";
             num = 0;
+            System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
+            another = scanner.next().toUpperCase();
+            scanner.nextLine();
             while (another.equals("Y") == false && another.equals("N") == false)
             {
-                System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
+                System.out.print("Would you like to encode / decode another string? (Y/N): ");
                 another = scanner.next().toUpperCase();
                 scanner.nextLine();
             }

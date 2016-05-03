@@ -115,10 +115,14 @@ public class Cryptogram
         System.out.println("Cryptogram");
         while (another.equals("Y"))
         {
+            System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
+            choice = scanner.next().toLowerCase();
+            scanner.nextLine();
             while (choice.equals("encode") == false && choice.equals("decode") == false)
             {
-                System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
-                choice = scanner.nextLine().toLowerCase();
+                System.out.print("Would you like to encode a message or decode a code? (encode/decode): ");
+                choice = scanner.next().toLowerCase();
+                scanner.nextLine();
             }
             if (choice.equals("encode"))
             {
@@ -134,10 +138,13 @@ public class Cryptogram
             }
             another = "";
             choice = "";
+            System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
+            another = scanner.nextLine().toUpperCase();
             while (another.equals("Y") == false && another.equals("N") == false)
             {
-                System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
-                another = scanner.nextLine().toUpperCase();
+                System.out.print("Would you like to encode / decode another string? (Y/N): ");
+                another = scanner.next().toUpperCase();
+                scanner.nextLine();
             }
         }
         System.out.println("\nCryptogram closed.");
