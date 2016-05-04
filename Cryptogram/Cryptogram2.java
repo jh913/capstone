@@ -104,6 +104,31 @@ public class Cryptogram2
     }
     
     /**
+     * Determines whether the given String represents an integer
+     * 
+     * Code from Stack Overflow
+     * http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
+     * 
+     * @param String str The String that may or may not represent an integer
+     * @return boolean isInt true if the given String represents an integer
+     *                       false if the given String does not represent an integer
+     */
+    public static boolean isAnInteger(String str)
+    {
+        boolean isInt;
+        try
+        {
+            Integer.parseInt(str);
+            isInt = true;
+        }
+        catch (Exception e)
+        {
+            isInt = false;
+        }
+        return isInt;
+    }
+    
+    /**
      * Main method of the Cryptogram2 program that prompts the user for choices, messages / codes, etc.
      * Encodes user input messages and decodes user input codes by using the corresponding methods
      */
@@ -132,7 +157,11 @@ public class Cryptogram2
                 while (num < 1)
                 {
                     System.out.print("Number of characters to move to the right: ");
-                    num = scanner.nextInt();
+                    String temp = scanner.next();
+                    if (Cryptogram2.isAnInteger(temp))
+                    {
+                        num = Integer.parseInt(temp);
+                    }
                 }
                 System.out.println("Code: " + Cryptogram2.encode(message, num));
             }
@@ -143,7 +172,11 @@ public class Cryptogram2
                 while (num < 1)
                 {
                     System.out.print("Number of characters to move to the left: ");
-                    num = scanner.nextInt();
+                    String temp = scanner.next();
+                    if (Cryptogram2.isAnInteger(temp))
+                    {
+                        num = Integer.parseInt(temp);
+                    }
                 }
                 System.out.println("Message: " + Cryptogram2.decode(code, num));
             }
