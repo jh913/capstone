@@ -22,19 +22,19 @@ public class Cryptogram
     //private static final String RBRAC = ")]}>";
     //private static final String MATH = "+-*/^=~$%";
     //private static final String TAG = "@#";
-    //private static final String SEP = "_&|";
+    //private static final String BOOL = "&|";
     
     //Preset order of characters that will be used throughout the Cryptogram class
-    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#_&|";
+    private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
     
     /**
-     * Encodes a user input message by replacing each character in the message with the next
-     * consecutive character based on the preset ORDER
+     * Encodes a user input message by replacing each character in the message with the
+     * character num consecutive characters to the right based on the preset ORDER
      * 
      * @param String message The user input message to be encoded into a code
      * @return String code The code encoded from the user input message
      */
-    public static String encode(String message)
+    public static String encode(String message, int num)
     {
         //Initializes the user input message's corresponding code to an empty string
         String code = "";
@@ -51,8 +51,8 @@ public class Cryptogram
             {
                 //The index of the preset ORDER of the character to the right
                 //of the character at the current index of the message
-                int iORDER = ORDER.indexOf(message.charAt(i))+1;
-                if (iORDER >= ORDER.length()) //If the index exceeds the length of the preset ORDER
+                int iORDER = ORDER.indexOf(message.charAt(i))+num;
+                while (iORDER >= ORDER.length()) //If the index exceeds the length of the preset ORDER
                 {
                     //Subtract the length of the preset ORDER from the index iORDER
                     iORDER -= ORDER.length();
@@ -66,13 +66,13 @@ public class Cryptogram
     }
     
     /**
-     * Decodes a user input code by replacing each character in the code with the previous
-     * consecutive character based on the preset ORDER
+     * Decodes a user input code by replacing each character in the code with the
+     * character num consecutive characters to the left based on the preset ORDER
      * 
      * @param String code The user input code to be decoded into a message
      * @return String message The message decoded from the user input code
      */
-    public static String decode(String code)
+    public static String decode(String code, int num)
     {
         //Initializes the user input code's corresponding message to an empty string
         String message = "";
@@ -89,8 +89,8 @@ public class Cryptogram
             {
                 //The index of the preset ORDER of the character to the left
                 //of the character at the current index of the code
-                int iORDER = ORDER.indexOf(code.charAt(i))-1;
-                if (iORDER < 0) //If the index falls below 0
+                int iORDER = ORDER.indexOf(code.charAt(i))-num;
+                while (iORDER < 0) //If the index falls below 0
                 {
                     //Add the length of the preset ORDER to the index iORDER
                     iORDER += ORDER.length();
@@ -104,6 +104,31 @@ public class Cryptogram
     }
     
     /**
+     * Determines whether the given String represents an integer
+     * 
+     * Code from Stack Overflow
+     * http://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java
+     * 
+     * @param String str The String that may or may not represent an integer
+     * @return boolean isInt true if the given String represents an integer
+     *                       false if the given String does not represent an integer
+     */
+    public static boolean isAnInteger(String str)
+    {
+        boolean isInt;
+        try
+        {
+            Integer.parseInt(str);
+            isInt = true;
+        }
+        catch (Exception e)
+        {
+            isInt = false;
+        }
+        return isInt;
+    }
+    
+    /**
      * Main method of the Cryptogram program that prompts the user for choices, messages / codes, etc.
      * Encodes user input messages and decodes user input codes by using the corresponding methods
      */
@@ -112,6 +137,7 @@ public class Cryptogram
         Scanner scanner = new Scanner(System.in);
         String another = "Y";
         String choice = "";
+        int num = 0;
         System.out.println("Cryptogram");
         while (another.equals("Y"))
         {
@@ -124,22 +150,42 @@ public class Cryptogram
                 choice = scanner.next().toLowerCase();
                 scanner.nextLine();
             }
-            if (choice.equals("encode"))
+            if (choice.toLowerCase().equals("encode"))
             {
                 System.out.print("\nMessage to encode: ");
                 String message = scanner.nextLine();
-                System.out.println("Code: " + Cryptogram.encode(message));
+                while (num < 1)
+                {
+                    System.out.print("Number of characters to move to the right: ");
+                    String temp = scanner.next();
+                    if (Cryptogram.isAnInteger(temp))
+                    {
+                        num = Integer.parseInt(temp);
+                    }
+                }
+                System.out.println("Code: " + Cryptogram.encode(message, num));
             }
-            else if (choice.equals("decode"))
+            else if (choice.toLowerCase().equals("decode"))
             {
                 System.out.print("\nCode to decode: ");
                 String code = scanner.nextLine();
-                System.out.println("Message: " + Cryptogram.decode(code));
+                while (num < 1)
+                {
+                    System.out.print("Number of characters to move to the left: ");
+                    String temp = scanner.next();
+                    if (Cryptogram.isAnInteger(temp))
+                    {
+                        num = Integer.parseInt(temp);
+                    }
+                }
+                System.out.println("Message: " + Cryptogram.decode(code, num));
             }
             another = "";
             choice = "";
+            num = 0;
             System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
-            another = scanner.nextLine().toUpperCase();
+            another = scanner.next().toUpperCase();
+            scanner.nextLine();
             while (another.equals("Y") == false && another.equals("N") == false)
             {
                 System.out.print("Would you like to encode / decode another string? (Y/N): ");
