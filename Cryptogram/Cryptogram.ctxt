@@ -1,6 +1,7 @@
 #BlueJ class context
 comment0.params=
 comment0.target=Cryptogram()
+comment0.text=\r\n\ Constructor\ for\ Cryptogram\ GUI\r\n
 comment1.params=message\ num
 comment1.target=java.lang.String\ encode(java.lang.String,\ int)
 comment1.text=\r\n\ Encodes\ a\ user\ input\ message\ by\ replacing\ each\ character\ in\ the\ message\ with\ the\r\n\ character\ num\ consecutive\ characters\ to\ the\ right\ based\ on\ the\ preset\ ORDER\r\n\ \r\n\ @param\ String\ message\ The\ user\ input\ message\ to\ be\ encoded\ into\ a\ code\r\n\ @return\ String\ code\ The\ code\ encoded\ from\ the\ user\ input\ message\r\n
@@ -12,4 +13,5 @@ comment3.target=boolean\ isAnInteger(java.lang.String)
 comment3.text=\r\n\ Determines\ whether\ the\ given\ String\ represents\ an\ integer\r\n\ \r\n\ Code\ from\ Stack\ Overflow\r\n\ http\://stackoverflow.com/questions/237159/whats-the-best-way-to-check-to-see-if-a-string-represents-an-integer-in-java\r\n\ \r\n\ @param\ String\ str\ The\ String\ that\ may\ or\ may\ not\ represent\ an\ integer\r\n\ @return\ boolean\ isInt\ true\ if\ the\ given\ String\ represents\ an\ integer\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ false\ if\ the\ given\ String\ does\ not\ represent\ an\ integer\r\n
 comment4.params=args
 comment4.target=void\ main(java.lang.String[])
+comment4.text=\r\n\ \r\n
 numComments=5

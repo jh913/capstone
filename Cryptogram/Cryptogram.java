@@ -1,9 +1,12 @@
 import javax.swing.*;
 import java.awt.event.*;
 
+/**
+ * 
+ */
 public class Cryptogram
 {
-    ////Preset orders of different types of characters -- now using a single combined order instead
+    ////Preset orders of different types of characters -- now using single combined order instead
     //private static final String LCASE = "abcdefghijklmnopqrstuvwxyz";
     //private static final String UCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //private static final String NUM = "1234567890";
@@ -16,89 +19,140 @@ public class Cryptogram
     //private static final String TAG = "@#";
     //private static final String BOOL = "&|";
     
-    //Preset order of characters that will be used throughout the Cryptogram2 class
+    //Preset order of characters that will be used throughout the Cryptogram class
     private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
     
-    
+    //Dimensions of frame
     private static final int FW = 650;
     private static final int FH = 200;
     
+    //Frame and panel
     private JFrame frame;
     private JPanel panel;
     
     //JRadioButton Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#radiobutton
-    private ButtonGroup choice;
+    //Encode and decode radio buttons and button group that contains them
     private JRadioButton encode;
     private JRadioButton decode;
+    private ButtonGroup choice;
     
     //JTextField Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+    //Label, first message / code text field
     private JLabel str1Lbl;
     private JTextField str1;
     
+    //Label, number of characters text field
     private JLabel numCharsLbl;
     private JTextField numChars;
     
+    //Go button that calls encode and decode methods
     private JButton go;
     
+    //Label, second message / code text field
     private JLabel str2Lbl;
     private JTextField str2;
     
+    //Error label
     private JLabel error;
     
+    /**
+     * Constructor for Cryptogram GUI
+     */
     public Cryptogram()
     {
+        //Create frame and panel
         this.frame = new JFrame();
         this.panel = new JPanel();
+        
+        //Set layout of panel to null; using absolute positioning
         this.panel.setLayout(null);
         
+        //Create encode and decode radio buttons
         this.encode = new JRadioButton("Encode");
         this.decode = new JRadioButton("Decode");
+        //Create radio button group
         this.choice = new ButtonGroup();
+        //Add encode and decode radio buttons to the same button group so only one can be chosen at a time
         this.choice.add(encode);
         this.choice.add(decode);
-        this.encode.setSelected(true);
+        //Add encode and decode radio buttons to panel
         this.panel.add(encode);
         this.panel.add(decode);
-        this.encode.setBounds(10, 10, 100, 20);
-        this.decode.setBounds(110, 10, 100, 20);
+        //Position the encode and decode radio buttons within panel
+        this.encode.setBounds(10, 10, 90, 20);
+        this.decode.setBounds(100, 10, 100, 20);
+        //Set encode radio button as the default
+        this.encode.setSelected(true);
         
-        this.str1Lbl = new JLabel("Message: ");
+        //Create label for first message / code text field
+        this.str1Lbl = new JLabel("Message:");
+        //Create first message / code text field
         this.str1 = new JTextField(50);
+        //Make first message / code text field editable
         this.str1.setEditable(true);
+        //Add label and text field to panel
         this.panel.add(str1Lbl);
         this.panel.add(str1);
+        //Position label and text field within panel
         this.str1Lbl.setBounds(10, 40, 60, 20);
         this.str1.setBounds(70, 40, 500, 20);
         
+        //Create label for number of characters text field
         this.numCharsLbl = new JLabel("Number of Characters to Shift: ");
+        //Create number of characters text field
         this.numChars = new JTextField(5);
+        //Make number of characters text field editable
         this.numChars.setEditable(true);
+        //Add label and text field to panel
         this.panel.add(numCharsLbl);
         this.panel.add(numChars);
-        this.numCharsLbl.setBounds(10, 70, 200, 20);
-        this.numChars.setBounds(210, 70, 100, 20);
+        //Position label and text field within panel
+        this.numCharsLbl.setBounds(10, 70, 180, 20);
+        this.numChars.setBounds(190, 70, 100, 20);
+        //Set 1 as the default for number of characters text field
         this.numChars.setText("1");
         
+        //Create go button that calls encode and decode methods
         this.go = new JButton("Go");
-        ClickListener listener = new ClickListener();
-        this.go.addActionListener(listener);
+        //Create listener for go button
+        ButtonListener bListener = new ButtonListener();
+        //Add listener to go button
+        this.go.addActionListener(bListener);
+        //Add go button to panel
         this.panel.add(go);
-        this.go.setBounds(320, 70, 50, 20);
+        //Position go button within panel
+        this.go.setBounds(300, 70, 50, 20);
         
-        this.str2Lbl = new JLabel("Code: ");
+        //Create error label
+        this.error = new JLabel();
+        //Add error label to panel
+        this.panel.add(error);
+        //Position error label within panel
+        this.error.setBounds(360, 70, 50, 20);
+        
+        //Create label for second message / code text field
+        this.str2Lbl = new JLabel("Code:");
+        //Create second message / code text field
         this.str2 = new JTextField(50);
+        //Make second message / code text field uneditable
         this.str2.setEditable(false);
+        //Add label and text field to panel
         this.panel.add(str2Lbl);
         this.panel.add(str2);
-        this.str2Lbl.setBounds(32, 100, 60, 20);
+        //Position label and text field within panel
+        this.str2Lbl.setBounds(10, 100, 60, 20);
         this.str2.setBounds(70, 100, 500, 20);
         
-        this.error = new JLabel();
-        this.panel.add(error);
-        this.error.setBounds(10, 130, 50, 20);
+        //Create listener for encode and decode radio buttons
+        RadioButtonListener rbListener = new RadioButtonListener();
+        //Add listener to encode and decode radio buttons
+        this.encode.addItemListener(rbListener);
+        this.decode.addItemListener(rbListener);
         
+        //Add frame to panel
         this.frame.add(this.panel);
         
+        //Set size, title, default close operation, resizability, and visibility of frame
         this.frame.setSize(FW, FH);
         this.frame.setTitle("Cryptogram");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -207,12 +261,18 @@ public class Cryptogram
         return isInt;
     }
     
+    /**
+     * 
+     */
     public static void main(String[] args)
     {
         Cryptogram view = new Cryptogram();
     }
     
-    public class ClickListener implements ActionListener
+    /**
+     * 
+     */
+    public class ButtonListener implements ActionListener
     {
         public void actionPerformed(ActionEvent event)
         {
@@ -231,6 +291,30 @@ public class Cryptogram
             else
             {
                 error.setText("Error");
+            }
+        }
+    }
+    
+    /**
+     * 
+     */
+    public class RadioButtonListener implements ItemListener
+    {
+        public void itemStateChanged(ItemEvent event)
+        {
+            if (event.getItem().equals(encode))
+            {
+                str1Lbl.setText("Message:");
+                str2Lbl.setText("Code:");
+            }
+            else if (event.getItem().equals(decode))
+            {
+                str1Lbl.setText("Code:");
+                str2Lbl.setText("Message:");
+            }
+            else
+            {
+                
             }
         }
     }
