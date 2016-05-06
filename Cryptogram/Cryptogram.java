@@ -1,14 +1,6 @@
-//Import the scanner class whose object will be used in the main method
-//to prompt the user for choices, messages / codes, etc.
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.*;
 
-/**
- * Class that encodes user input messages and decodes user input codes by using a main method
- * that prompts the user for choices, messages / codes, etc. and calls the corresponding methods
- * 
- * @author Justin Huang
- * @version 13 April 2016
- */
 public class Cryptogram
 {
     ////Preset orders of different types of characters -- now using a single combined order instead
@@ -24,8 +16,95 @@ public class Cryptogram
     //private static final String TAG = "@#";
     //private static final String BOOL = "&|";
     
-    //Preset order of characters that will be used throughout the Cryptogram class
+    //Preset order of characters that will be used throughout the Cryptogram2 class
     private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
+    
+    
+    private static final int FW = 650;
+    private static final int FH = 200;
+    
+    private JFrame frame;
+    private JPanel panel;
+    
+    //JRadioButton Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#radiobutton
+    private ButtonGroup choice;
+    private JRadioButton encode;
+    private JRadioButton decode;
+    
+    //JTextField Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+    private JLabel str1Lbl;
+    private JTextField str1;
+    
+    private JLabel numCharsLbl;
+    private JTextField numChars;
+    
+    private JButton go;
+    
+    private JLabel str2Lbl;
+    private JTextField str2;
+    
+    private JLabel error;
+    
+    public Cryptogram()
+    {
+        this.frame = new JFrame();
+        this.panel = new JPanel();
+        this.panel.setLayout(null);
+        
+        this.encode = new JRadioButton("Encode");
+        this.decode = new JRadioButton("Decode");
+        this.choice = new ButtonGroup();
+        this.choice.add(encode);
+        this.choice.add(decode);
+        this.encode.setSelected(true);
+        this.panel.add(encode);
+        this.panel.add(decode);
+        this.encode.setBounds(10, 10, 100, 20);
+        this.decode.setBounds(110, 10, 100, 20);
+        
+        this.str1Lbl = new JLabel("Message: ");
+        this.str1 = new JTextField(50);
+        this.str1.setEditable(true);
+        this.panel.add(str1Lbl);
+        this.panel.add(str1);
+        this.str1Lbl.setBounds(10, 40, 60, 20);
+        this.str1.setBounds(70, 40, 500, 20);
+        
+        this.numCharsLbl = new JLabel("Number of Characters to Shift: ");
+        this.numChars = new JTextField(5);
+        this.numChars.setEditable(true);
+        this.panel.add(numCharsLbl);
+        this.panel.add(numChars);
+        this.numCharsLbl.setBounds(10, 70, 200, 20);
+        this.numChars.setBounds(210, 70, 100, 20);
+        this.numChars.setText("1");
+        
+        this.go = new JButton("Go");
+        ClickListener listener = new ClickListener();
+        this.go.addActionListener(listener);
+        this.panel.add(go);
+        this.go.setBounds(320, 70, 50, 20);
+        
+        this.str2Lbl = new JLabel("Code: ");
+        this.str2 = new JTextField(50);
+        this.str2.setEditable(false);
+        this.panel.add(str2Lbl);
+        this.panel.add(str2);
+        this.str2Lbl.setBounds(32, 100, 60, 20);
+        this.str2.setBounds(70, 100, 500, 20);
+        
+        this.error = new JLabel();
+        this.panel.add(error);
+        this.error.setBounds(10, 130, 50, 20);
+        
+        this.frame.add(this.panel);
+        
+        this.frame.setSize(FW, FH);
+        this.frame.setTitle("Cryptogram");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
+    }
     
     /**
      * Encodes a user input message by replacing each character in the message with the
@@ -128,71 +207,31 @@ public class Cryptogram
         return isInt;
     }
     
-    /**
-     * Main method of the Cryptogram program that prompts the user for choices, messages / codes, etc.
-     * Encodes user input messages and decodes user input codes by using the corresponding methods
-     */
     public static void main(String[] args)
     {
-        Scanner scanner = new Scanner(System.in);
-        String another = "Y";
-        String choice = "";
-        int num = 0;
-        System.out.println("Cryptogram");
-        while (another.equals("Y"))
+        Cryptogram view = new Cryptogram();
+    }
+    
+    public class ClickListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent event)
         {
-            System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
-            choice = scanner.next().toLowerCase();
-            scanner.nextLine();
-            while (choice.equals("encode") == false && choice.equals("decode") == false)
+            String str = str1.getText();
+            String num = numChars.getText();
+            if (encode.isSelected() && Cryptogram.isAnInteger(num))
             {
-                System.out.print("Would you like to encode a message or decode a code? (encode/decode): ");
-                choice = scanner.next().toLowerCase();
-                scanner.nextLine();
+                error.setText("");
+                str2.setText(Cryptogram.encode(str, Integer.parseInt(num)));
             }
-            if (choice.toLowerCase().equals("encode"))
+            else if (decode.isSelected() && Cryptogram.isAnInteger(num))
             {
-                System.out.print("\nMessage to encode: ");
-                String message = scanner.nextLine();
-                while (num < 1)
-                {
-                    System.out.print("Number of characters to move to the right: ");
-                    String temp = scanner.next();
-                    if (Cryptogram.isAnInteger(temp))
-                    {
-                        num = Integer.parseInt(temp);
-                    }
-                }
-                System.out.println("Code: " + Cryptogram.encode(message, num));
+                error.setText("");
+                str2.setText(Cryptogram.decode(str, Integer.parseInt(num)));
             }
-            else if (choice.toLowerCase().equals("decode"))
+            else
             {
-                System.out.print("\nCode to decode: ");
-                String code = scanner.nextLine();
-                while (num < 1)
-                {
-                    System.out.print("Number of characters to move to the left: ");
-                    String temp = scanner.next();
-                    if (Cryptogram.isAnInteger(temp))
-                    {
-                        num = Integer.parseInt(temp);
-                    }
-                }
-                System.out.println("Message: " + Cryptogram.decode(code, num));
-            }
-            another = "";
-            choice = "";
-            num = 0;
-            System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
-            another = scanner.next().toUpperCase();
-            scanner.nextLine();
-            while (another.equals("Y") == false && another.equals("N") == false)
-            {
-                System.out.print("Would you like to encode / decode another string? (Y/N): ");
-                another = scanner.next().toUpperCase();
-                scanner.nextLine();
+                error.setText("Error");
             }
         }
-        System.out.println("\nCryptogram closed.");
     }
 }
