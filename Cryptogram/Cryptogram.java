@@ -1,17 +1,12 @@
-//Import the scanner class whose object will be used in the main method
-//to prompt the user for choices, messages / codes, etc.
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.*;
 
 /**
- * Class that encodes user input messages and decodes user input codes by using a main method
- * that prompts the user for choices, messages / codes, etc. and calls the corresponding methods
  * 
- * @author Justin Huang
- * @version 13 April 2016
  */
 public class Cryptogram
 {
-    ////Preset orders of different types of characters -- now using a single combined order instead
+    ////Preset orders of different types of characters -- now using single combined order instead
     //private static final String LCASE = "abcdefghijklmnopqrstuvwxyz";
     //private static final String UCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //private static final String NUM = "1234567890";
@@ -26,6 +21,131 @@ public class Cryptogram
     
     //Preset order of characters that will be used throughout the Cryptogram class
     private static final String ORDER = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?:;\"\'`/\\([{<)]}>+-*/^=~$%@#&|_";
+    
+    //Dimensions of frame
+    private static final int FW = 650;
+    private static final int FH = 200;
+    
+    //Frame and panel
+    private JFrame frame;
+    private JPanel panel;
+    
+    //JRadioButton Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/button.html#radiobutton
+    //Encode and decode radio buttons and button group that contains them
+    private JRadioButton encode;
+    private JRadioButton decode;
+    private ButtonGroup choice;
+    
+    //JTextField Tutorial: https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
+    //Label, first message / code text field
+    private JLabel str1Lbl;
+    private JTextField str1;
+    
+    //Label, number of characters text field
+    private JLabel numCharsLbl;
+    private JTextField numChars;
+    
+    //Go button that calls encode and decode methods
+    private JButton go;
+    
+    //Error label
+    private JLabel error;
+    
+    //Label, second message / code text field
+    private JLabel str2Lbl;
+    private JTextField str2;
+    
+    /**
+     * Constructor for Cryptogram GUI
+     */
+    public Cryptogram()
+    {
+        //CREATE ALL COMPONENTS
+        //Frame and panel
+        this.frame = new JFrame();
+        this.panel = new JPanel();
+        //Encode and decode radio buttons
+        this.encode = new JRadioButton("Encode");
+        this.decode = new JRadioButton("Decode");
+        //Radio button group
+        this.choice = new ButtonGroup();
+        //Add encode and decode radio buttons to the same button group so only one can be chosen at a time
+        this.choice.add(encode);
+        this.choice.add(decode);
+        //Label for first message / code text field
+        this.str1Lbl = new JLabel("Message:");
+        //First message / code text field
+        this.str1 = new JTextField(50);
+        //Create label for number of characters text field
+        this.numCharsLbl = new JLabel("Number of Characters to Shift: ");
+        //Create number of characters text field
+        this.numChars = new JTextField(5);
+        //Create go button that calls encode and decode methods
+        this.go = new JButton("Go");
+        //Create error label
+        this.error = new JLabel();
+        //Create label for second message / code text field
+        this.str2Lbl = new JLabel("Code:");
+        //Create second message / code text field
+        this.str2 = new JTextField(50);
+        
+        //SET EDITABILITY OF TEXT FIELDS
+        this.str1.setEditable(true);
+        this.numChars.setEditable(true);
+        this.str2.setEditable(false);
+        
+        //SET DEFAULT VALUES
+        this.encode.setSelected(true);
+        this.numChars.setText("1");
+        
+        //ADD ALL COMPONENTS TO PANEL
+        this.panel.add(encode);
+        this.panel.add(decode);
+        this.panel.add(str1Lbl);
+        this.panel.add(str1);
+        this.panel.add(numCharsLbl);
+        this.panel.add(numChars);
+        this.panel.add(go);
+        this.panel.add(error);
+        this.panel.add(str2Lbl);
+        this.panel.add(str2);
+        
+        //Set layout of panel to null; using absolute positioning
+        this.panel.setLayout(null);
+        
+        //POSITION ALL COMPONENTS WITHIN PANEL
+        this.encode.setBounds(10, 10, 90, 20);
+        this.decode.setBounds(100, 10, 100, 20);
+        this.str1Lbl.setBounds(10, 40, 60, 20);
+        this.str1.setBounds(70, 40, 500, 20);
+        this.numCharsLbl.setBounds(10, 70, 180, 20);
+        this.numChars.setBounds(190, 70, 100, 20);
+        this.go.setBounds(300, 70, 50, 20);
+        this.error.setBounds(360, 70, 50, 20);
+        this.str2Lbl.setBounds(10, 100, 60, 20);
+        this.str2.setBounds(70, 100, 500, 20);
+        
+        //Create listener for go button
+        ButtonListener bListener = new ButtonListener();
+        //Add listener to go button
+        this.go.addActionListener(bListener);
+        
+        //Create listener for encode and decode radio buttons
+        RadioButtonListener rbListener = new RadioButtonListener();
+        //Add listener to encode and decode radio buttons
+        this.encode.addItemListener(rbListener);
+        this.decode.addItemListener(rbListener);
+        
+        //Add frame to panel
+        this.frame.add(this.panel);
+        
+        //Set frame values
+        this.frame.setSize(FW, FH);
+        this.frame.setTitle("Cryptogram");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setResizable(false);
+        this.frame.setVisible(true);
+    }
     
     /**
      * Encodes a user input message by replacing each character in the message with the
@@ -129,70 +249,60 @@ public class Cryptogram
     }
     
     /**
-     * Main method of the Cryptogram program that prompts the user for choices, messages / codes, etc.
-     * Encodes user input messages and decodes user input codes by using the corresponding methods
+     * 
      */
     public static void main(String[] args)
     {
-        Scanner scanner = new Scanner(System.in);
-        String another = "Y";
-        String choice = "";
-        int num = 0;
-        System.out.println("Cryptogram");
-        while (another.equals("Y"))
+        Cryptogram view = new Cryptogram();
+    }
+    
+    /**
+     * 
+     */
+    public class ButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent event)
         {
-            System.out.print("\nWould you like to encode a message or decode a code? (encode/decode): ");
-            choice = scanner.next().toLowerCase();
-            scanner.nextLine();
-            while (choice.equals("encode") == false && choice.equals("decode") == false)
+            String str = str1.getText();
+            String num = numChars.getText();
+            if (encode.isSelected() && Cryptogram.isAnInteger(num))
             {
-                System.out.print("Would you like to encode a message or decode a code? (encode/decode): ");
-                choice = scanner.next().toLowerCase();
-                scanner.nextLine();
+                error.setText("");
+                str2.setText(Cryptogram.encode(str, Integer.parseInt(num)));
             }
-            if (choice.toLowerCase().equals("encode"))
+            else if (decode.isSelected() && Cryptogram.isAnInteger(num))
             {
-                System.out.print("\nMessage to encode: ");
-                String message = scanner.nextLine();
-                while (num < 1)
-                {
-                    System.out.print("Number of characters to move to the right: ");
-                    String temp = scanner.next();
-                    if (Cryptogram.isAnInteger(temp))
-                    {
-                        num = Integer.parseInt(temp);
-                    }
-                }
-                System.out.println("Code: " + Cryptogram.encode(message, num));
+                error.setText("");
+                str2.setText(Cryptogram.decode(str, Integer.parseInt(num)));
             }
-            else if (choice.toLowerCase().equals("decode"))
+            else
             {
-                System.out.print("\nCode to decode: ");
-                String code = scanner.nextLine();
-                while (num < 1)
-                {
-                    System.out.print("Number of characters to move to the left: ");
-                    String temp = scanner.next();
-                    if (Cryptogram.isAnInteger(temp))
-                    {
-                        num = Integer.parseInt(temp);
-                    }
-                }
-                System.out.println("Message: " + Cryptogram.decode(code, num));
-            }
-            another = "";
-            choice = "";
-            num = 0;
-            System.out.print("\nWould you like to encode / decode another string? (Y/N): ");
-            another = scanner.next().toUpperCase();
-            scanner.nextLine();
-            while (another.equals("Y") == false && another.equals("N") == false)
-            {
-                System.out.print("Would you like to encode / decode another string? (Y/N): ");
-                another = scanner.next().toUpperCase();
-                scanner.nextLine();
+                error.setText("Error");
             }
         }
-        System.out.println("\nCryptogram closed.");
+    }
+    
+    /**
+     * 
+     */
+    public class RadioButtonListener implements ItemListener
+    {
+        public void itemStateChanged(ItemEvent event)
+        {
+            if (event.getItem().equals(encode))
+            {
+                str1Lbl.setText("Message:");
+                str2Lbl.setText("Code:");
+            }
+            else if (event.getItem().equals(decode))
+            {
+                str1Lbl.setText("Code:");
+                str2Lbl.setText("Message:");
+            }
+            else
+            {
+                
+            }
+        }
     }
 }
