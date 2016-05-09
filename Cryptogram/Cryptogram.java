@@ -289,6 +289,7 @@ public class Cryptogram
             else
             {
                 error.setText("Error");
+                str2.setText("");
             }
         }
     }
