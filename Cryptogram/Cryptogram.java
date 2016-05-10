@@ -299,6 +299,9 @@ public class Cryptogram
      * 
      * When the encode or decode radio button is clicked, swaps
      * the message and code text field labels accordingly
+     * 
+     * @author Justin Huang
+     * @version 10 May 2016
      */
     public class RadioButtonListener implements ItemListener
     {
